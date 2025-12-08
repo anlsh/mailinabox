@@ -112,11 +112,10 @@ hide_output systemctl enable mailinabox.service
 # Perform nightly tasks at 3am in system time: take a backup, run
 # status checks and email the administrator any changes.
 
-minute=$((RANDOM % 60))  # avoid overloading mailinabox.email
-cat > /etc/cron.d/mailinabox-nightly << EOF;
+cat > /etc/cron.d/mailinabox-cron << EOF;
 # Mail-in-a-Box --- Do not edit / will be overwritten on update.
-# Run nightly tasks: backup, status checks.
-$minute 1 * * *	root	(cd $PWD && management/daily_tasks.sh)
+# Modify files in $PWD/management/cron instead.
+* * * * *	root	(cd $PWD && run-parts management/cron)
 EOF
 
 # Start the management server.

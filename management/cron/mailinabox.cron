@@ -1,0 +1,20 @@
+# FORMAT:
+# ┌───────────── minute (0–59)
+# │ ┌───────────── hour (0–23)
+# │ │ ┌───────────── day of month (1–31)
+# │ │ │ ┌───────────── month (1–12)
+# │ │ │ │ ┌───────────── day of week (0–7, Sun=0 or 7)
+# │ │ │ │ │
+# │ │ │ │ │
+
+# On Mondays, i.e. once a week, send the administrator a report of total emails
+0 0 * * 1   management/mail_log.py -t week | management/email_administrator.py "Mail-in-a-Box Usage Report"
+
+#########
+# Daily #
+#########
+
+# Take a backup
+0 3 * * *   management/backup.py 2>&1 | management/email_administrator.py "Backup Status"
+0 3 * * *   management/ssl_certificates.py -q  2>&1 | management/email_administrator.py "TLS Certificate Provisioning Result"
+0 3 * * *   management/status_checks.py --show-changes  2>&1 | management/email_administrator.py "Status Checks Change Notice"
