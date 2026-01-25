@@ -8,13 +8,13 @@
 # │ │ │ │ │
 
 # On Mondays, i.e. once a week, send the administrator a report of total emails
-0 0 * * 1   root    management/mail_log.py -t week | management/email_administrator.py "Mail-in-a-Box Usage Report"
+0 * * * 1   root    management/mail_log.py -t week | management/email_administrator.py "Mail-in-a-Box Usage Report"
 
 #########
 # Daily #
 #########
 
 # Take a backup
-0 3 * * *   root    management/backup.py 2>&1 | management/email_administrator.py "Backup Status"
+0 * * * *   root    management/backup.py 2>&1 | management/email_administrator.py "Backup Status"
 0 3 * * *   root    management/ssl_certificates.py -q  2>&1 | management/email_administrator.py "TLS Certificate Provisioning Result"
 0 3 * * *   root    management/status_checks.py --show-changes  2>&1 | management/email_administrator.py "Status Checks Change Notice"
